@@ -1,8 +1,7 @@
 
-<https://leetcode.com/studyplan/top-sql-50/>
-
 > 打算6/10-6/16一星期时间刷完的,6/12了刷题进度9/50，特在小红书打卡来激励自己。
 主要记录一下做了什么题，思路（这些用typora写成.md，然后push到github，内容复制到小红书）
+<https://leetcode.com/studyplan/top-sql-50/>
  #leetcode[话题]#  #sql[话题]#  #sql刷题[话题]#
 
 >没想到pandas实现sql一样的功能竟然有这么多坑：1280题，解法2 pandas需考虑student_name中是否存在null，左连接需要新增列记录考试出勤情况，不然就不会出现null，最后还要还原缺省值；解法1 新增列语法agg记忆难度大，同时列名被打乱需要重新排序。综上，个人不熟悉pandas的情况下为提高解题速度leetcode sql50 join section 从1280后没有pandas解答
