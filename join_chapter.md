@@ -27,6 +27,10 @@ https://leetcode.com/studyplan/top-sql-50/
 - [1280. Students and Examinations](#1280-students-and-examinations)
   - [sql](#sql-6)
   - [pandas](#pandas-6)
+- [570. Managers with at Least 5 Direct Reports](#570-managers-with-at-least-5-direct-reports)
+  - [sql](#sql-7)
+- [1934. Confirmation Rate](#1934-confirmation-rate)
+  - [sql](#sql-8)
 
 
 # 1378. Replace Employee ID With The Unique Identifier
@@ -313,4 +317,64 @@ def students_and_examinations(students: pd.DataFrame, subjects: pd.DataFrame, ex
     merged_df = merged_df.groupby(['student_id','student_name','subject_name']).sum().reset_index()
     merged_df.loc[merged_df['student_name']=='null', 'student_name'] = np.nan
     return merged_df 
+```
+
+# 570. Managers with at Least 5 Direct Reports
+
+## sql
+```sql
+-- 考察 in, group-by, having
+-- 方法1： inner join
+-- select
+--     name
+-- from
+--     employee as e
+-- inner join
+-- (select 
+--     managerID,count(managerId) as cid
+-- from
+--     employee
+-- group by
+--     managerId
+-- having
+--     count(managerId)>=5
+-- ) as c
+-- on
+--     e.id = c.managerID
+-- ;
+
+-- 方法2：
+SELECT 
+    name 
+FROM 
+    Employee 
+WHERE 
+    id IN (
+    SELECT 
+        managerId 
+    FROM 
+        Employee 
+    GROUP BY 
+        managerId 
+    HAVING 
+        COUNT(*) >= 5
+    )
+```
+
+# 1934. Confirmation Rate
+## sql
+
+```sql
+-- 考察 if, left-join,on,group-by
+select
+    s.user_id, round(avg(if(c.action='confirmed',1.00,0.00)),2) as confirmation_rate
+from
+    signups as s
+left join
+    confirmations as c
+on 
+    s.user_id = c.user_id
+group by
+    s.user_id
+;
 ```
