@@ -14,7 +14,7 @@ https://leetcode.com/studyplan/top-sql-50/
   - [sql](#sql-3)
 - [1211. Queries Quality and Percentage](#1211-queries-quality-and-percentage)
   - [sql](#sql-4)
-- [1211. Queries Quality and Percentage](#1211-queries-quality-and-percentage-1)
+- [1193. Monthly Transactions I](#1193-monthly-transactions-i)
   - [sql](#sql-5)
 - [1174. Immediate Food Delivery II](#1174-immediate-food-delivery-ii)
   - [sql](#sql-6)
@@ -115,7 +115,7 @@ having
 ;
 ```
 
-# 1211. Queries Quality and Percentage
+# 1193. Monthly Transactions I
 
 ## sql
 
