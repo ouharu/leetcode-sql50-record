@@ -1,8 +1,9 @@
-https://leetcode.com/studyplan/top-sql-50/
+
+<https://leetcode.com/studyplan/top-sql-50/>
 
 > 打算6/10-6/16一星期时间刷完的,6/12了刷题进度9/50，特在小红书打卡来激励自己。
 主要记录一下做了什么题，思路（这些用typora写成.md，然后push到github，内容复制到小红书）
- #leetcode[话题]#  #sql[话题]#  #sql刷题[话题]# 
+ #leetcode[话题]#  #sql[话题]#  #sql刷题[话题]#
 
 >没想到pandas实现sql一样的功能竟然有这么多坑：1280题，解法2 pandas需考虑student_name中是否存在null，左连接需要新增列记录考试出勤情况，不然就不会出现null，最后还要还原缺省值；解法1 新增列语法agg记忆难度大，同时列名被打乱需要重新排序。综上，个人不熟悉pandas的情况下为提高解题速度leetcode sql50 join section 从1280后没有pandas解答
 
@@ -32,9 +33,9 @@ https://leetcode.com/studyplan/top-sql-50/
 - [1934. Confirmation Rate](#1934-confirmation-rate)
   - [sql](#sql-8)
 
-
 # 1378. Replace Employee ID With The Unique Identifier
-https://leetcode.com/problems/replace-employee-id-with-the-unique-identifier/?envType=study-plan-v2&envId=top-sql-50
+
+<https://leetcode.com/problems/replace-employee-id-with-the-unique-identifier/?envType=study-plan-v2&envId=top-sql-50>
 
 ## sql
 
@@ -50,6 +51,7 @@ on
 e.id = eu.id
 ;
 ```
+
 ## pandas
 
 ```python
@@ -66,7 +68,8 @@ def replace_employee_id(employees: pd.DataFrame, employee_uni: pd.DataFrame) -> 
 ```
 
 # 1068. Product Sales Analysis I
-https://leetcode.com/problems/product-sales-analysis-i/?envType=study-plan-v2&envId=top-sql-50
+
+<https://leetcode.com/problems/product-sales-analysis-i/?envType=study-plan-v2&envId=top-sql-50>
 
 ## sql
 
@@ -81,6 +84,7 @@ product as pt
 on
 st.product_id = pt.product_id;
 ```
+
 ## pandas
 
 ```python
@@ -97,7 +101,8 @@ def sales_analysis(sales: pd.DataFrame, product: pd.DataFrame) -> pd.DataFrame:
 ```
 
 # 595. Big Countries
-https://leetcode.com/problems/big-countries/?envType=study-plan-v2&envId=top-sql-50
+
+<https://leetcode.com/problems/big-countries/?envType=study-plan-v2&envId=top-sql-50>
 
 ## sql
 
@@ -115,6 +120,7 @@ WHERE
 T.TRANSACTION_ID IS NULL
 GROUP BY V.CUSTOMER_ID; -- 此处与select column_name一致
 ```
+
 ## pandas
 
 ```python
@@ -133,7 +139,9 @@ def find_customers(visits: pd.DataFrame, transactions: pd.DataFrame) -> pd.DataF
 ```
 
 # 197. Rising Temperature
-https://leetcode.com/problems/rising-temperature/?envType=study-plan-v2&envId=top-sql-50
+
+<https://leetcode.com/problems/rising-temperature/?envType=study-plan-v2&envId=top-sql-50>
+
 ## sql
 
 ```sql
@@ -149,6 +157,7 @@ where
 w1.temperature > w2.temperature
 ;
 ```
+
 ## pandas
 
 ```python
@@ -178,7 +187,8 @@ def rising_temperature(weather: pd.DataFrame) -> pd.DataFrame:
 ```
 
 # 1661. Average Time of Process per Machine
-https://leetcode.com/problems/average-time-of-process-per-machine/?envType=study-plan-v2&envId=top-sql-50
+
+<https://leetcode.com/problems/average-time-of-process-per-machine/?envType=study-plan-v2&envId=top-sql-50>
 
 ## sql
 
@@ -197,6 +207,7 @@ group by
 a1.machine_id
 ;
 ```
+
 ## pandas
 
 ```python
@@ -220,9 +231,11 @@ def get_average_time(activity: pd.DataFrame) -> pd.DataFrame:
 ```
 
 # 577. Employee Bonus
-https://leetcode.com/problems/employee-bonus/?envType=study-plan-v2&envId=top-sql-50
+
+<https://leetcode.com/problems/employee-bonus/?envType=study-plan-v2&envId=top-sql-50>
 
 ## sql
+
 ```sql
 -- 考察join-where-or
 select
@@ -237,7 +250,9 @@ where
 b.bonus < 1000 or b.bonus is null
 ;
 ```
+
 ## pandas
+
 ```python
 import pandas as pd
 
@@ -250,6 +265,7 @@ def employee_bonus(employee: pd.DataFrame, bonus: pd.DataFrame) -> pd.DataFrame:
 # 1280. Students and Examinations
 
 ## sql
+
 ```sql
 -- 考察 coalesce，cross-join, group-by, order-by
 SELECT 
@@ -271,6 +287,7 @@ GROUP BY
 ORDER BY 
     s.student_id, sub.subject_name;
 ```
+
 ## pandas
 
 ```python
@@ -322,6 +339,7 @@ def students_and_examinations(students: pd.DataFrame, subjects: pd.DataFrame, ex
 # 570. Managers with at Least 5 Direct Reports
 
 ## sql
+
 ```sql
 -- 考察 in, group-by, having
 -- 方法1： inner join
@@ -362,6 +380,7 @@ WHERE
 ```
 
 # 1934. Confirmation Rate
+
 ## sql
 
 ```sql
