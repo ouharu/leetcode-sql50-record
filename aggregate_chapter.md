@@ -6,18 +6,20 @@ https://leetcode.com/studyplan/top-sql-50/
 
 - [620. Not Boring Movies](#620-not-boring-movies)
   - [sql](#sql)
-- [584. Find Customer Referee](#584-find-customer-referee)
+- [1251.Average Selling Price](#1251average-selling-price)
   - [sql](#sql-1)
-  - [pandas](#pandas)
-- [595. Big Countries](#595-big-countries)
+- [1075. Project Employees I](#1075-project-employees-i)
   - [sql](#sql-2)
-  - [pandas](#pandas-1)
-- [1148. Article Views I](#1148-article-views-i)
+- [1633. Percentage of Users Attended a Contest](#1633-percentage-of-users-attended-a-contest)
   - [sql](#sql-3)
-  - [pandas](#pandas-2)
-- [1683. Invalid Tweets](#1683-invalid-tweets)
+- [1211. Queries Quality and Percentage](#1211-queries-quality-and-percentage)
   - [sql](#sql-4)
-  - [pandas](#pandas-3)
+- [1211. Queries Quality and Percentage](#1211-queries-quality-and-percentage-1)
+  - [sql](#sql-5)
+- [1174. Immediate Food Delivery II](#1174-immediate-food-delivery-ii)
+  - [sql](#sql-6)
+- [550. Game Play Analysis IV](#550-game-play-analysis-iv)
+  - [sql](#sql-7)
 
 # 620. Not Boring Movies
 
@@ -37,115 +39,142 @@ order by
 ;
 ```
 
-# 584. Find Customer Referee
+# 1251.Average Selling Price
 
 ## sql
 
 ```sql
--- 考察 select-where- <> / is null
-select 
-    name
-from
-    Customer
-where
-    referee_id<>2
-or
-    referee_id is null
-;
-```
-## pandas
-
-```python
-import pandas as pd
-
-def find_customer_referee(customer: pd.DataFrame) -> pd.DataFrame:
-    # != .isnull()
-    df = customer[(customer['referee_id']!=2)|(customer['referee_id'].isnull())]
-    return df[['name']]
-```
-
-# 595. Big Countries
-https://leetcode.com/problems/big-countries/?envType=study-plan-v2&envId=top-sql-50
-
-## sql
-
-```sql
--- 考察 select-where , 没有新知识点
+-- 考察 isnull()/coalesce(), between-and
 select
-    name,
-    population,
-    area
+    p.product_id, coalesce(round(sum(p.price*u.units)/sum(u.units),2),0) as average_price
 from
-    World
-where
-    area >= 3000000
-or
-    population >= 25000000
+    prices as p
+left join
+    unitssold as u
+on
+    p.product_id = u.product_id and
+    u.purchase_date between 
+    p.start_date and p.end_date
+group by
+    p.product_id
 ;
 ```
-## pandas
 
-```python
-import pandas as pd
-
-def big_countries(world: pd.DataFrame) -> pd.DataFrame:
-    res = world[(world['area']>=3000000) | (world['population']>=25000000)]
-    return res[['name','population','area']]
-```
-
-# 1148. Article Views I
-https://leetcode.com/problems/article-views-i/?envType=study-plan-v2&envId=top-sql-50
+# 1075. Project Employees I
 
 ## sql
 
 ```sql
--- 考察 distinct as order-by
+-- 考察 同上 , 没有新知识点
 select 
-distinct author_id as id 
-from 
-views
-where 
-author_id = viewer_id
-order by 
-author_id;
-```
-## pandas
-
-```python
-import pandas as pd
-
-def article_views(views: pd.DataFrame) -> pd.DataFrame:
-    
-    # 步骤1: 筛选 author_id 等于 viewer_id 的行
-    filtered_views = views[views['author_id'] == views['viewer_id']]
-
-    # 步骤2: 删除 author_id 列中的重复值
-    unique_authors = filtered_views.drop_duplicates(subset='author_id')
-
-    # 步骤3: 选择 author_id 列并重命名为 id
-    result = unique_authors[['author_id']].rename(columns={'author_id': 'id'})
-
-    # 步骤4: 按 id 列排序
-    sorted_result = result.sort_values(by='id',ascending=True)
-    return sorted_result    
+    p.project_id, ifnull(round(avg(experience_years),2),0) as average_years
+from
+    project as p
+left join
+    employee as e
+on
+    p.employee_id = e.employee_id
+group by
+    p.project_id
+;
 ```
 
-# 1683. Invalid Tweets
-https://leetcode.com/problems/invalid-tweets/?envType=study-plan-v2&envId=top-sql-50
+# 1633. Percentage of Users Attended a Contest
 
 ## sql
 
 ```sql
--- 考察 length
-select tweet_id from tweets
-where length(content)>15;
+select
+-- 考察 distinct as order-by, 子查询
+    r.contest_id , round(count(r.user_id)/(select count(user_id) from users),4)*100 as percentage
+from
+    register as r
+group by
+    r.contest_id
+order by
+    percentage desc , r.contest_id
+;
 ```
-## pandas
 
-```python
-import pandas as pd
+# 1211. Queries Quality and Percentage
 
-def invalid_tweets(tweets: pd.DataFrame) -> pd.DataFrame:
-    len_tweets = tweets[tweets['content'].str.len() > 15]
-    return len_tweets[['tweet_id']]
+## sql
+
+```sql
+-- 考察 if(),having
+select 
+    query_name,
+    round(avg(rating/position),2) as quality,
+    round(avg(if(rating<3,1,0)),4)*100 as poor_query_percentage
+from 
+    queries
+group by
+    query_name
+having
+    query_name is not null
+;
+```
+
+# 1211. Queries Quality and Percentage
+
+## sql
+
+```sql
+-- 考察 sum(if()) date_formate(date,format)
+select 
+    DATE_FORMAT(trans_date, '%Y-%m') as month,
+    country,
+    count(amount) as trans_count,
+    sum(if(state='approved',1,0)) as approved_count,
+    sum(amount) as trans_total_amount,
+    sum(if(state='approved',amount,0)) as approved_total_amount
+from
+    transactions
+group by
+    month , country
+;
+```
+
+# 1174. Immediate Food Delivery II
+
+## sql
+
+```sql
+-- 考察 select * from (select * from table) as t
+select
+    round(100*sum(d.immediate_count) / count(*),2) as immediate_percentage
+from
+(
+select
+    customer_id,
+    if(min(order_date)=min(customer_pref_delivery_date),1,0) as immediate_count
+from
+    delivery
+group by
+    customer_id
+) as d
+;
+```
+
+# 550. Game Play Analysis IV
+
+## sql
+
+```sql
+-- datediff, join
+select 
+    round(sum(if(datediff(a1.event_date,a2.start_date)=1,1,0))/count(distinct a1.player_id),2) as fraction
+from
+activity as a1
+left join
+(select
+    player_id,
+    min(event_date) as start_date
+from
+    activity
+group by
+    player_id
+) as a2
+on a1.player_id = a2.player_id
+;
 ```
