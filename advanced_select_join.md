@@ -117,7 +117,7 @@ where
 ## sql
 
 ```sql
--- 考察 groupby-orderby
+-- 考察 union where-in
 select 
     distinct product_id,
     10 as price
