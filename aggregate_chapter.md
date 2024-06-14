@@ -1,8 +1,8 @@
-https://leetcode.com/studyplan/top-sql-50/
+<https://leetcode.com/studyplan/top-sql-50/>
 
 > 打算6/10-6/16一星期时间刷完的,6/12了刷题进度9/50，特在小红书打卡来激励自己。
 主要记录一下做了什么题，思路（这些用typora写成.md，然后push到github，内容复制到小红书）
- #leetcode[话题]#  #sql[话题]#  #sql刷题[话题]# 
+ #leetcode[话题]#  #sql[话题]#  #sql刷题[话题]#
 
 - [620. Not Boring Movies](#620-not-boring-movies)
   - [sql](#sql)
