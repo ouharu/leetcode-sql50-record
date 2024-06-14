@@ -10,16 +10,14 @@
   - [sql](#sql-1)
 - [1070. Product Sales Analysis III](#1070-product-sales-analysis-iii)
   - [sql](#sql-2)
-- [1633. Percentage of Users Attended a Contest](#1633-percentage-of-users-attended-a-contest)
+- [596. Classes More Than 5 Students](#596-classes-more-than-5-students)
   - [sql](#sql-3)
-- [1211. Queries Quality and Percentage](#1211-queries-quality-and-percentage)
+- [1729. Find Followers Count](#1729-find-followers-count)
   - [sql](#sql-4)
-- [1193. Monthly Transactions I](#1193-monthly-transactions-i)
+- [619. Biggest Single Number](#619-biggest-single-number)
   - [sql](#sql-5)
-- [1174. Immediate Food Delivery II](#1174-immediate-food-delivery-ii)
+- [1045. Customers Who Bought All Products](#1045-customers-who-bought-all-products)
   - [sql](#sql-6)
-- [550. Game Play Analysis IV](#550-game-play-analysis-iv)
-  - [sql](#sql-7)
 
 # 2356. Number of Unique Subjects Taught by Each Teacher
 
@@ -83,102 +81,95 @@ on
 ;
 ```
 
-# 1633. Percentage of Users Attended a Contest
+# 596. Classes More Than 5 Students
 
 ## sql
 
 ```sql
-select
--- 考察 distinct as order-by, 子查询
-    r.contest_id , round(count(r.user_id)/(select count(user_id) from users),4)*100 as percentage
+-- 考察 group-by, having
+select 
+    class
 from
-    register as r
+    courses
 group by
-    r.contest_id
+    class
+having 
+    count(class) >= 5
+;
+```
+
+# 1729. Find Followers Count
+
+## sql
+
+```sql
+-- 考察 groupby-orderby
+select
+    user_id,
+    count(follower_id) as followers_count 
+from
+    followers
+group by
+    user_id
 order by
-    percentage desc , r.contest_id
+    user_id
 ;
 ```
 
-# 1211. Queries Quality and Percentage
+# 619. Biggest Single Number
 
 ## sql
 
 ```sql
--- 考察 if(),having
+-- 考察 where in  subquery
+-- method 1
 select 
-    query_name,
-    round(avg(rating/position),2) as quality,
-    round(avg(if(rating<3,1,0)),4)*100 as poor_query_percentage
+    max(num)as num 
 from 
-    queries
-group by
-    query_name
-having
-    query_name is not null
-;
-```
-
-# 1193. Monthly Transactions I
-
-## sql
-
-```sql
--- 考察 sum(if()) date_formate(date,format)
+    mynumbers 
+where 
+    num 
+in (
+    select 
+        num 
+    from 
+        mynumbers 
+    group by 
+        num 
+    having 
+        count(num)=1 
+);
+-- method 2
 select 
-    DATE_FORMAT(trans_date, '%Y-%m') as month,
-    country,
-    count(amount) as trans_count,
-    sum(if(state='approved',1,0)) as approved_count,
-    sum(amount) as trans_total_amount,
-    sum(if(state='approved',amount,0)) as approved_total_amount
-from
-    transactions
-group by
-    month , country
+    max(num) as num 
+from 
+   (
+    select 
+        num 
+    from 
+        mynumbers 
+    group by 
+        num 
+    having 
+        count(num)=1 
+    ) as m
 ;
+
 ```
 
-# 1174. Immediate Food Delivery II
+# 1045. Customers Who Bought All Products
 
 ## sql
 
 ```sql
--- 考察 select * from (select * from table) as t
+-- 考察 groupby-having-count=count
 select
-    round(100*sum(d.immediate_count) / count(*),2) as immediate_percentage
+    customer_id
 from
-(
-select
-    customer_id,
-    if(min(order_date)=min(customer_pref_delivery_date),1,0) as immediate_count
-from
-    delivery
+    customer
 group by
     customer_id
-) as d
-;
-```
-
-# 550. Game Play Analysis IV
-
-## sql
-
-```sql
--- datediff, join
-select 
-    round(sum(if(datediff(a1.event_date,a2.start_date)=1,1,0))/count(distinct a1.player_id),2) as fraction
-from
-activity as a1
-left join
-(select
-    player_id,
-    min(event_date) as start_date
-from
-    activity
-group by
-    player_id
-) as a2
-on a1.player_id = a2.player_id
+having
+    count(distinct product_key) = (select count(product_key) from product)
 ;
 ```
